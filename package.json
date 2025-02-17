@@ -1,0 +1,24 @@
+{
+  "name": "designer",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "build:css": "tailwindcss-cli -i ./src/styles.css -o ./dist/styles.css",
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "CherryTree56567",
+  "license": "MIT",
+  "description": "A simple vector design tool.",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "tailwind-fontawesome": "^0.7.1",
+    "tailwindcss": "^4.0.6",
+    "tailwindcss-cli": "^0.1.2"
+  },
+  "devDependencies": {
+    "@catppuccin/tailwindcss": "^0.1.6",
+    "daisyui": "^4.12.23",
+    "electron": "^34.2.0"
+  }
+}
