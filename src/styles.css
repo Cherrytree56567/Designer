@@ -4,9 +4,17 @@
 
 @layer components {
     .hover-fill {
-        @apply w-6 h-6 transition-colors duration-200 fill-current text-gray-500;
+        @apply w-6 h-6 transition-colors duration-100 fill-current text-gray-500;
     }
     .hover-fill:hover {
         @apply fill-ctp-blue;
     }
+}
+
+.dropdown-content {
+    display: none;
+}
+
+.dropdown-content.show {
+    display: block;
 }
