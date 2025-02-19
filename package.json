@@ -4,7 +4,8 @@
   "main": "main.js",
   "scripts": {
     "build:css": "tailwindcss-cli -i ./src/styles.css -o ./dist/styles.css",
-    "start": "electron ."
+    "start": "electron .",
+    "web": "http-server"
   },
   "keywords": [],
   "author": "CherryTree56567",
