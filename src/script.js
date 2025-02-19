@@ -1,12 +1,3 @@
-const fileBtn = document.getElementById('file-btn');
-const fileDropdown = document.getElementById('file-dropdown');
-const editBtn = document.getElementById('edit-btn');
-const editDropdown = document.getElementById('edit-dropdown');
-const selectBtn = document.getElementById('select-btn');
-const selectDropdown = document.getElementById('select-dropdown');
-const viewBtn = document.getElementById('view-btn');
-const viewDropdown = document.getElementById('view-dropdown');
-
 function isElectron() {
     if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
         return true;
@@ -23,92 +14,7 @@ function isElectron() {
     return false;
 }
 
-fileBtn.addEventListener('click', (event) => {
-    event.stopPropagation();
-    fileDropdown.classList.toggle('show');
-    if (editDropdown.classList.contains('show')) {
-        editDropdown.classList.remove('show');
-    }
-    if (selectDropdown.classList.contains('show')) {
-        selectDropdown.classList.remove('show');
-    }
-    if (viewDropdown.classList.contains('show')) {
-        viewDropdown.classList.remove('show');
-    }
-});
-
-editBtn.addEventListener('click', (event) => {
-    event.stopPropagation();
-    editDropdown.classList.toggle('show');
-    if (fileDropdown.classList.contains('show')) {
-        fileDropdown.classList.remove('show');
-    }
-    if (selectDropdown.classList.contains('show')) {
-        selectDropdown.classList.remove('show');
-    }
-    if (viewDropdown.classList.contains('show')) {
-        viewDropdown.classList.remove('show');
-    }
-});
-
-selectBtn.addEventListener('click', (event) => {
-    event.stopPropagation();
-    selectDropdown.classList.toggle('show');
-    if (fileDropdown.classList.contains('show')) {
-        fileDropdown.classList.remove('show');
-    }
-    if (editDropdown.classList.contains('show')) {
-        editDropdown.classList.remove('show');
-    }
-    if (viewDropdown.classList.contains('show')) {
-        viewDropdown.classList.remove('show');
-    }
-});
-
-viewBtn.addEventListener('click', (event) => {
-    event.stopPropagation();
-    viewDropdown.classList.toggle('show');
-    if (fileDropdown.classList.contains('show')) {
-        fileDropdown.classList.remove('show');
-    }
-    if (editDropdown.classList.contains('show')) {
-        editDropdown.classList.remove('show');
-    }
-    if (selectDropdown.classList.contains('show')) {
-        selectDropdown.classList.remove('show');
-    }
-});
-
-window.addEventListener('click', () => {
-    if (fileDropdown.classList.contains('show')) {
-        fileDropdown.classList.remove('show');
-    }
-    if (editDropdown.classList.contains('show')) {
-        editDropdown.classList.remove('show');
-    }
-    if (selectDropdown.classList.contains('show')) {
-        selectDropdown.classList.remove('show');
-    }
-    if (viewDropdown.classList.contains('show')) {
-        viewDropdown.classList.remove('show');
-    }
-});
-
-fileDropdown.addEventListener('click', (event) => {
-    event.stopPropagation();
-});
-
-editDropdown.addEventListener('click', (event) => {
-    event.stopPropagation();
-});
-
-selectDropdown.addEventListener('click', (event) => {
-    event.stopPropagation();
-});
-
-viewDropdown.addEventListener('click', (event) => {
-    event.stopPropagation();
-});
+var tools = [];
 
 if (isElectron() == true) {
     document.getElementById('min').addEventListener('click', () => {
@@ -142,3 +48,77 @@ function changeToolBarName(child) {
 function resetToolbar() {
     document.getElementById("menu-items").innerHTML = "";
 }
+
+function hideToolbar() {
+    document.getElementById("toolbar-container").style.display = "none";
+}
+
+function addMenuEntry(name, exec, dropdownname, dropdownexec) {
+    var modname = name.replace(/ /g, "-");
+    var nbsname = name.replace(/ /g, "&nbsp;");
+    var menu = document.getElementById("menu");
+    var container = document.createElement("div");
+    container.classList.add("relative");
+    container.style.webkitAppRegion = "no-drag";
+  
+    var btn = document.createElement("a");
+    btn.id = modname + "-btn";
+    btn.className = "text-xs pl-4 cursor-pointer";
+    if (exec && exec !== "") {
+      btn.setAttribute("onclick", exec);
+    }
+    btn.innerHTML = nbsname;
+    container.appendChild(btn);
+
+    var dropdown = null;
+    if (dropdownname != null) {
+      dropdown = document.createElement("div");
+      dropdown.id = modname + "-dropdown";
+      dropdown.className = "dropdown-content absolute left-3 mt-2 bg-ctp-mantle shadow-lg z-10";
+      for (var i = 0; i < dropdownname.length; i++) {
+        var ddItem = document.createElement("a");
+        ddItem.className = "block px-3 py-1 text-xs text-ctp-text hover:bg-ctp-surface2 w-fit cursor-pointer";
+        if (dropdownexec[i] && dropdownexec[i] !== "") {
+          ddItem.setAttribute("onclick", dropdownexec[i]);
+        }
+        ddItem.innerHTML = dropdownname[i].replace(/ /g, "&nbsp;");
+        dropdown.appendChild(ddItem);
+      }
+      container.appendChild(dropdown);
+    }
+  
+    menu.appendChild(container);
+  
+    btn.addEventListener("click", function(event) {
+      event.stopPropagation();
+      if (dropdown) {
+        dropdown.classList.toggle("show");
+      }
+      for (var i = 0; i < tools.length; i++) {
+        var otherDropdown = document.getElementById(tools[i] + "-dropdown");
+        if (otherDropdown && otherDropdown !== dropdown && otherDropdown.classList.contains("show")) {
+          otherDropdown.classList.remove("show");
+        }
+      }
+    });
+
+  
+    tools.push(modname);
+
+    document.getElementById(modname + "-dropdown").addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+}
+
+document.addEventListener("click", function() {
+    var openDropdowns = document.querySelectorAll(".dropdown-content.show");
+    openDropdowns.forEach(function(dropdown) {
+        dropdown.classList.remove("show");
+    });
+});
+  
+
+addMenuEntry("File", null, ["New", "Open", "Save", "Save As", "Close"], ["newFile()", "openFile()", "saveFile()", "saveAsFile()", "closeFile()"]);
+addMenuEntry("Edit", null, ["Undo", "Redo", "Cut", "Copy", "Paste", "Select All"], ["undo()", "redo()", "cut()", "copy()", "paste()", "selectAll()"]);
+addMenuEntry("Select", null, ["Select All", "Select Line", "Select Word"], ["selectAll()", "selectLine()", "selectWord()"]);
+addMenuEntry("View", null, ["Zoom In", "Zoom Out", "Reset Zoom"], ["zoomIn()", "zoomOut()", "resetZoom()"]);
