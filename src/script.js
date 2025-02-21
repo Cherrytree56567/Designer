@@ -53,6 +53,28 @@ function hideToolbar() {
     document.getElementById("toolbar-container").style.display = "none";
 }
 
+function addSideBtn(child) {
+    const id = "Side" + Math.random().toString();
+    document.getElementById("side-items").innerHTML += '<a class="text-base pl-4 pr-4 cursor-pointer flex items-center h-8 rounded-md" style="-webkit-app-region: no-drag;" id="' + id + '" onclick="activeSide(' + "'" + id + "'" + ')">' + child + '</a>';
+}
+
+function resetSidebar() {
+    document.getElementById("side-items").innerHTML = "";
+}
+
+function hideSidebar() {
+    document.getElementById("sidebar-container").style.display = "none";
+}
+
+function activeSide(id) {
+    var sideItems = document.getElementById("side-items").children;
+    for (var i = 0; i < sideItems.length; i++) {
+        sideItems[i].classList.remove("bg-ctp-mantle");
+    }
+    var sideItem = document.getElementById(id);
+    sideItem.classList.add("bg-ctp-mantle");
+}
+
 function addMenuEntry(name, exec, dropdownname, dropdownexec) {
     var modname = name.replace(/ /g, "-");
     var nbsname = name.replace(/ /g, "&nbsp;");
@@ -108,6 +130,10 @@ function addMenuEntry(name, exec, dropdownname, dropdownexec) {
     document.getElementById(modname + "-dropdown").addEventListener('click', (event) => {
         event.stopPropagation();
     });
+}
+
+function resetMenu() {
+    document.getElementById("menu").innerHTML = "";
 }
 
 document.addEventListener("click", function() {
