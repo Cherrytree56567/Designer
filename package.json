@@ -12,7 +12,9 @@
   "license": "MIT",
   "description": "A simple vector design tool.",
   "dependencies": {
+    "@jaames/iro": "^5.5.2",
     "autoprefixer": "^10.4.20",
+    "http-server": "^14.1.1",
     "tailwind-fontawesome": "^0.7.1",
     "tailwindcss": "^4.0.6",
     "tailwindcss-cli": "^0.1.2"

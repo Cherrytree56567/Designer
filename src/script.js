@@ -1,7 +1,9 @@
 var tools = [];
 var rightTabs = [];
+var rightMidTabs = [];
 var currentSide = null;
 var currentRight = null;
+var currentRightMid = null;
 
 document.getElementById("dropdownBtn").addEventListener("click", function () {
     document.getElementById("dropdownMenu").classList.toggle("hidden");
@@ -31,6 +33,16 @@ function isElectron() {
     }
 
     return false;
+}
+
+function randomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 if (isElectron() == true) {
@@ -175,9 +187,9 @@ function resetBottombar() {
 }
 
 function addRightTab(tabName, tabContent) {
-    let newTabName = tabName.replace(/\s+/g, '');
-    document.getElementById("right-tabs").innerHTML += '<button class="tab-btn px-4 py-2 border-l-2 border-ctp-base" data-tab="' + newTabName + '">' + tabName + '</button>';
-    document.getElementById("right-items").innerHTML += '<div class="tab-content p-4 hidden" id="' + newTabName + '">' + tabContent + '</div>';
+    let newTabName = tabName.replace(/\s+/g, '') + "Right";
+    document.getElementById("right-tabs").innerHTML += '<button class="tab-btn px-2 py-1 mt-1 border-l-2 border-ctp-base bg-ctp-base rounded-t-lg pr-3" data-tab="' + newTabName + '">' + tabName + '</button>';
+    document.getElementById("right-items").innerHTML += '<div class="tab-content w-72 p-4 hidden" id="' + newTabName + '">' + tabContent + '</div>';
     document.getElementById("right-dropdown").innerHTML += '<li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0 drop-btn" data-tab="' + newTabName + '" id="dropTab-' + newTabName + '">' + tabName + '</a></li>';
     rightTabs.push(newTabName);
     const buttons = document.querySelectorAll(".tab-btn");
@@ -228,20 +240,90 @@ function addRightTab(tabName, tabContent) {
 }
 
 function removeRightTab(tabName) {
-    let newTabName = tabName.replace(/\s+/g, '');
+    let newTabName = tabName.replace(/\s+/g, '') + "Right";
     document.querySelectorAll('.tab-btn[data-tab="' + newTabName + '"]').forEach(el => el.remove());
     document.querySelector('#' + newTabName)?.remove();
     rightTabs = rightTabs.filter(item => item !== newTabName);
-    if (currentTabName == newTabName) {
-        currentTabName = null;
+    if (currentRight == newTabName) {
+        currentRight = null;
     }
 }
 
-function clearRightTab(tabName) {
+function clearRightTab() {
     document.querySelectorAll('.tab-btn').forEach(el => el.remove());
     document.querySelectorAll('.tab-content').forEach(el => el.remove());
     rightTabs = [];
-    currentTabName = null;
+    currentRight = null;
+}
+
+function addRightMidTab(tabName, tabContent) {
+    let newTabName = tabName.replace(/\s+/g, '') + "RightMID";
+    document.getElementById("rightmid-tabs").innerHTML += '<button class="tabmid-btn px-2 py-1 mt-1 border-l-2 border-ctp-base bg-ctp-base rounded-t-lg pr-3" data-tab="' + newTabName + '">' + tabName + '</button>';
+    document.getElementById("rightmid-items").innerHTML += '<div class="tabmid-content w-72 p-2 hidden" id="' + newTabName + '">' + tabContent + '</div>';
+    document.getElementById("rightmid-dropdown").innerHTML += '<li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0 dropmid-btn" data-tab="' + newTabName + '" id="dropMidTab-' + newTabName + '">' + tabName + '</a></li>';
+    rightMidTabs.push(newTabName);
+    const buttons = document.querySelectorAll(".tabmid-btn");
+    const contents = document.querySelectorAll(".tabmid-content");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const tabId = this.getAttribute("data-tab");
+
+            buttons.forEach((btn) => btn.classList.remove("bg-ctp-base"));
+            
+            contents.forEach((content) => content.classList.add("hidden"));
+
+            this.classList.add("bg-ctp-base");
+            document.getElementById(tabId).classList.remove("hidden");
+            currentRightMid = tabId;
+        });
+    });
+
+    document.querySelectorAll(".dropmid-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+            const tabId = this.getAttribute("data-tab");
+    
+            buttons.forEach((btn) => btn.classList.remove("bg-ctp-base"));
+                
+            contents.forEach((content) => content.classList.add("hidden"));
+    
+            document.querySelector('.tabmid-btn[data-tab="' + tabId + '"]').classList.add("bg-ctp-base");
+            document.getElementById(tabId).classList.remove("hidden");
+            currentRightMid = tabId;
+        });
+    })
+
+    buttons[0].click();
+
+    document.getElementById("dropdownrightmidBtn").addEventListener("click", function () {
+        document.getElementById("dropdownrightmidMenu").classList.toggle("hidden");
+    });
+    
+    document.addEventListener("click", function (event) {
+        let dropdown = document.getElementById("dropdownrightmidMenu");
+        let button = document.getElementById("dropdownrightmidBtn");
+    
+        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add("hidden");
+        }
+    });
+}
+
+function removeRightMidTab(tabName) {
+    let newTabName = tabName.replace(/\s+/g, '') + "RightMID";
+    document.querySelectorAll('.tabmid-btn[data-tab="' + newTabName + '"]').forEach(el => el.remove());
+    document.querySelector('#' + newTabName)?.remove();
+    rightMidTabs = rightMidTabs.filter(item => item !== newTabName);
+    if (currentRightMid == newTabName) {
+        currentRightMid = null;
+    }
+}
+
+function clearRightMidTab() {
+    document.querySelectorAll('.tabmid-btn').forEach(el => el.remove());
+    document.querySelectorAll('.tabmid-content').forEach(el => el.remove());
+    rightMidTabs = [];
+    currentRightMid = null;
 }
 
 addMenuEntry("File", null, ["New", "Open", "Save", "Save As", "Close"], ["newFile()", "openFile()", "saveFile()", "saveAsFile()", "closeFile()"]);
@@ -261,3 +343,24 @@ addSideBtn('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width=
 addBottomKey('<b>Drag</b> to select. ');
 addBottomKey('<b>Click</b> an object to select it. ');
 addBottomKey('<b>Scroll</b> to move. ');
+
+addRightTab("Color", '<div class="flex items-center justify-center"><div id="color-picker-container"></div></div>');
+
+var colorPicker = new iro.ColorPicker("#color-picker-container", {
+    width: 175,
+    color: "#ffffff",
+    wheelAngle: 270,
+    wheelLightness: true,
+    layout: [
+        {
+            component: iro.ui.TriangleWheel,
+            options: {
+                ringWidth: 15
+            }
+        }
+    ]
+});
+
+colorPicker.on('color:change', function(color) {
+    console.log('Selected color:', color.hexString);
+});

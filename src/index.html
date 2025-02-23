@@ -27,36 +27,47 @@
                 </div>
             </div>
         </div>
-        <div class="p-2 bg-ctp-base pt-2 pb-2 w-12 h-screen rounded-t" style="user-select: none;" id="sidebar-container">
+        <div class="p-2 bg-ctp-base pt-2 pb-2 w-12 h-screen rounded-tr-lg border-t-4 border-ctp-crust" style="user-select: none;" id="sidebar-container">
             <div class="flex items-center h-6 flex-col gap-1" id="sidebar">
                 <div id="side-items" class="flex flex-col gap-1">
                 </div>
             </div>
         </div>
-        <div class="p-2 bg-ctp-base pt-2 pb-2 w-screen h-6 flex flex-row bottom-0 absolute text-xs items-center" style="user-select: none;" id="bottombar-container">
+        <div class="p-2 bg-ctp-base pt-2 pb-2 w-screen h-6 flex flex-row bottom-0 absolute text-xs items-center z-10" style="user-select: none;" id="bottombar-container">
             <div class="flex items-center h-6 gap-1 pl-5" id="bottombar">
                 <div id="bottom-items" class="flex gap-1">
                 </div>
             </div>
         </div>
-        <div class="bg-ctp-base w-72 h-screen top-20 right-0.5 absolute" style="user-select: none;" id="rightbar-container">
+        <div class="bg-ctp-base w-72 h-screen top-20 right-0.5 absolute border-l-2 border-ctp-mantle" style="user-select: none;" id="rightbar-container">
             <div class="flex flex-col gap-1 h-80" id="rightbar">
-                <div class="flex flex-row bg-ctp-mantle" id="right-tabs">
-                    <div class="relative">
-                        <button id="dropdownBtn" class="px-2 py-2 border-l-2 border-ctp-base h-10"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" width="15" height="15"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path class="fill-current" d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64L0 448c0 17.7 14.3 32 32 32s32-14.3 32-32L64 64zm128 0c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 384c0 17.7 14.3 32 32 32s32-14.3 32-32l0-384z"/></svg></button>
+                <div class="flex flex-row bg-ctp-mantle text-xs" id="right-tabs">
+                    <div class="relative text-sm">
+                        <button id="dropdownBtn" class="px-2 py-2 h-10"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" width="15" height="15"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path class="fill-current" d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64L0 448c0 17.7 14.3 32 32 32s32-14.3 32-32L64 64zm128 0c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 384c0 17.7 14.3 32 32 32s32-14.3 32-32l0-384z"/></svg></button>
                         <div id="dropdownMenu" class="absolute right-0 w-max bg-ctp-mantle shadow-lg hidden text-xs">
                             <ul id="right-dropdown">
-                                <li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0">Option 1</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0">Option 2</a></li>
-                                <li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0">Option 3</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-row gap-1" id="right-items">
+                <div class="flex flex-row gap-1 h-80" id="right-items">
+                </div>
+            </div>
+            <div class="flex flex-col gap-1 h-96" id="rightmidbar">
+                <div class="flex flex-row bg-ctp-mantle text-xs" id="rightmid-tabs">
+                    <div class="relative text-sm">
+                        <button id="dropdownrightmidBtn" class="px-2 py-2 h-10"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" width="15" height="15"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path class="fill-current" d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64L0 448c0 17.7 14.3 32 32 32s32-14.3 32-32L64 64zm128 0c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 384c0 17.7 14.3 32 32 32s32-14.3 32-32l0-384z"/></svg></button>
+                        <div id="dropdownrightmidMenu" class="absolute right-0 w-max bg-ctp-mantle shadow-lg hidden text-xs">
+                            <ul id="rightmid-dropdown">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row h-96" id="rightmid-items">
                 </div>
             </div>
         </div>
-        <script src="script.js"></script>       
+        <script src="../dist/iro.js"></script>
+        <script src="script.js"></script>  
     </body>
 </html>
