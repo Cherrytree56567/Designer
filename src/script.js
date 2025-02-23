@@ -1,5 +1,21 @@
 var tools = [];
+var rightTabs = [];
 var currentSide = null;
+var currentRight = null;
+
+document.getElementById("dropdownBtn").addEventListener("click", function () {
+    document.getElementById("dropdownMenu").classList.toggle("hidden");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", function (event) {
+    let dropdown = document.getElementById("dropdownMenu");
+    let button = document.getElementById("dropdownBtn");
+
+    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add("hidden");
+    }
+});
 
 function isElectron() {
     if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
@@ -156,6 +172,76 @@ function addBottomKey(child) {
 
 function resetBottombar() {
     document.getElementById("bottom-items").innerHTML = "";
+}
+
+function addRightTab(tabName, tabContent) {
+    let newTabName = tabName.replace(/\s+/g, '');
+    document.getElementById("right-tabs").innerHTML += '<button class="tab-btn px-4 py-2 border-l-2 border-ctp-base" data-tab="' + newTabName + '">' + tabName + '</button>';
+    document.getElementById("right-items").innerHTML += '<div class="tab-content p-4 hidden" id="' + newTabName + '">' + tabContent + '</div>';
+    document.getElementById("right-dropdown").innerHTML += '<li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0 drop-btn" data-tab="' + newTabName + '" id="dropTab-' + newTabName + '">' + tabName + '</a></li>';
+    rightTabs.push(newTabName);
+    const buttons = document.querySelectorAll(".tab-btn");
+    const contents = document.querySelectorAll(".tab-content");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const tabId = this.getAttribute("data-tab");
+
+            buttons.forEach((btn) => btn.classList.remove("bg-ctp-base"));
+            
+            contents.forEach((content) => content.classList.add("hidden"));
+
+            this.classList.add("bg-ctp-base");
+            document.getElementById(tabId).classList.remove("hidden");
+            currentRight = tabId;
+        });
+    });
+
+    document.querySelectorAll(".drop-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+            const tabId = this.getAttribute("data-tab");
+    
+            buttons.forEach((btn) => btn.classList.remove("bg-ctp-base"));
+                
+            contents.forEach((content) => content.classList.add("hidden"));
+    
+            document.querySelector('.tab-btn[data-tab="' + tabId + '"]').classList.add("bg-ctp-base");
+            document.getElementById(tabId).classList.remove("hidden");
+            currentRight = tabId;
+        });
+    })
+
+    buttons[0].click();
+
+    document.getElementById("dropdownBtn").addEventListener("click", function () {
+        document.getElementById("dropdownMenu").classList.toggle("hidden");
+    });
+    
+    document.addEventListener("click", function (event) {
+        let dropdown = document.getElementById("dropdownMenu");
+        let button = document.getElementById("dropdownBtn");
+    
+        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add("hidden");
+        }
+    });
+}
+
+function removeRightTab(tabName) {
+    let newTabName = tabName.replace(/\s+/g, '');
+    document.querySelectorAll('.tab-btn[data-tab="' + newTabName + '"]').forEach(el => el.remove());
+    document.querySelector('#' + newTabName)?.remove();
+    rightTabs = rightTabs.filter(item => item !== newTabName);
+    if (currentTabName == newTabName) {
+        currentTabName = null;
+    }
+}
+
+function clearRightTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(el => el.remove());
+    document.querySelectorAll('.tab-content').forEach(el => el.remove());
+    rightTabs = [];
+    currentTabName = null;
 }
 
 addMenuEntry("File", null, ["New", "Open", "Save", "Save As", "Close"], ["newFile()", "openFile()", "saveFile()", "saveAsFile()", "closeFile()"]);
