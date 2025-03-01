@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "build:css": "tailwindcss-cli -i ./src/styles.css -o ./dist/styles.css",
+    "build:css": "tailwindcss-cli -i ./src/styles.css -o ./src/dist/styles.css",
     "start": "electron .",
-    "web": "http-server"
+    "web": "http-server ./src"
   },
   "keywords": [],
   "author": "CherryTree56567",

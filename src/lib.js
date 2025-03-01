@@ -188,7 +188,7 @@ function resetBottombar() {
 
 function addRightTab(tabName, tabContent) {
     let newTabName = tabName.replace(/\s+/g, '') + "Right";
-    document.getElementById("right-tabs").innerHTML += '<button class="tab-btn px-2 py-1 mt-1 border-l-2 border-ctp-base bg-ctp-base rounded-t-lg pr-3" data-tab="' + newTabName + '">' + tabName + '</button>';
+    document.getElementById("right-tabs").innerHTML += '<button class="tab-btn px-2 py-1 mt-1 border-l-2 border-ctp-base bg-ctp-base  pr-3" data-tab="' + newTabName + '">' + tabName + '</button>';
     document.getElementById("right-items").innerHTML += '<div class="tab-content w-72 p-4 hidden" id="' + newTabName + '">' + tabContent + '</div>';
     document.getElementById("right-dropdown").innerHTML += '<li><a href="#" class="block px-4 py-2 hover:bg-ctp-surface0 drop-btn" data-tab="' + newTabName + '" id="dropTab-' + newTabName + '">' + tabName + '</a></li>';
     rightTabs.push(newTabName);

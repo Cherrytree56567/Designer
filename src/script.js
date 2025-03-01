@@ -16,7 +16,73 @@ addBottomKey('<b>Drag</b> to select. ');
 addBottomKey('<b>Click</b> an object to select it. ');
 addBottomKey('<b>Scroll</b> to move. ');
 
-addRightTab("Color", '<div class="flex"><div class="" id="color"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="40" height="40" fill="#ffffffff"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg></div><div id="color-picker-container"></div></div>');
+addRightTab("Color", `<div class="flex">
+    <div class="" id="color">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="40" height="40" fill="#ffffffff">
+        <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/>
+        </svg>
+    </div>
+    <div id="color-picker-container">
+    </div>
+</div>`);
+addRightTab("Swatches", `<div class="flex flex-row justify-between">
+    <div class="" id="swatches-color">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="40" height="40" fill="#ffffffff">
+            <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/>
+        </svg>
+    </div>
+    <div id="right-container" class="flex flex-row">
+        <p class="text-xs mt-1 pr-1">Opacity:</p>
+        <div class="relative" style="app-region: no-drag;">
+            <a id="opacity-btn" class="text-xs pl-0 cursor-pointer bg-ctp-mantle pl-1 p-1 rounded">100%</a>
+            <div id="opacity-dropdown" class="dropdown-content absolute left-0 mt-1 bg-ctp-mantle shadow-lg z-10">
+                <a class="block px-3 py-1 text-xs text-ctp-text hover:bg-ctp-surface2 w-fit cursor-pointer" onclick="opacity(100)">100</a>
+                <a class="block px-3 py-1 text-xs text-ctp-text hover:bg-ctp-surface2 w-fit cursor-pointer" onclick="opacity(75)">75</a>
+                <a class="block px-3 py-1 text-xs text-ctp-text hover:bg-ctp-surface2 w-fit cursor-pointer" onclick="opacity(50)">50</a>
+                <a class="block px-3 py-1 text-xs text-ctp-text hover:bg-ctp-surface2 w-fit cursor-pointer" onclick="opacity(25)">25</a>
+                <a class="block px-3 py-1 text-xs text-ctp-text hover:bg-ctp-surface2 w-fit cursor-pointer" onclick="opacity(0)">0</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="swatches" class="flex flex-row mt-2">
+    <div class="color-picker"></div>
+</div>`);
+
+function opacity(num) {
+    document.getElementById("opacity-btn").innerText = num.toString() + "%";
+    console.log(num);
+    var color = currentColor.replace(/^#/, '');
+    var rgb = color.slice(0, 6); 
+
+    var alpha = Math.round((num / 100) * 255).toString(16).padStart(2, '0');
+
+    currentColor = `#${rgb}${alpha.toString().toUpperCase()}`;
+    colorPicker.color.set(currentColor);
+}
+
+document.getElementById("opacity-btn").addEventListener("click", function(event) {
+    var dropdown = document.getElementById("opacity-dropdown");
+    event.stopPropagation();
+    if (dropdown && dropdown.classList.contains("show")) {
+        dropdown.classList.remove("show");
+    } else {
+        dropdown.classList.toggle("show");
+    }
+});
+
+document.getElementById("opacity-dropdown").addEventListener('click', (event) => {
+    event.stopPropagation();
+});
+
+document.addEventListener("click", function (event) {
+    let dropdown = document.getElementById("opacity-dropdown");
+    let button = document.getElementById("opacity-btn");
+
+    dropdown.classList.add("hidden");
+});
 
 var currentColor = "#ffffffff";
 
@@ -44,5 +110,59 @@ var colorPicker = new iro.ColorPicker("#color-picker-container", {
 colorPicker.on('color:change', function(color) {
     console.log('Selected color:', color.hexString);
     document.querySelector("#color").querySelector("svg").style.fill = color.hexString;
+    document.querySelector("#swatches-color").querySelector("svg").style.fill = color.hexString;
     currentColor = color.hexString;
+});
+
+var pickr = Pickr.create({
+    el: '.color-picker',
+    theme: 'nano',
+
+    swatches: [
+        'rgba(244, 67, 54, 1)',
+        'rgba(233, 30, 99, 0.95)',
+        'rgba(156, 39, 176, 0.9)',
+        'rgba(103, 58, 183, 0.85)',
+        'rgba(63, 81, 181, 0.8)',
+        'rgba(33, 150, 243, 0.75)',
+        'rgba(3, 169, 244, 0.7)',
+        'rgba(0, 188, 212, 0.7)',
+        'rgba(0, 150, 136, 0.75)',
+        'rgba(76, 175, 80, 0.8)',
+        'rgba(139, 195, 74, 0.85)',
+        'rgba(205, 220, 57, 0.9)',
+        'rgba(255, 235, 59, 0.95)',
+        'rgba(255, 193, 7, 1)'
+    ],
+
+    components: {
+        preview: true,
+        opacity: true,
+        hue: true,
+
+        interaction: {
+            hex: true,
+            rgba: true,
+            hsla: true,
+            hsva: true,
+            cmyk: true,
+            input: true,
+            clear: true,
+            save: true
+        }
+    }
+});
+
+document.getElementsByClassName("pickr")[0].addEventListener('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+});
+
+document.getElementsByClassName("pickr")[0].addEventListener('dblclick', function() {
+    pickr.show();
+});
+
+pickr.on('save', color => {
+    document.getElementsByClassName("pickr")[0].style.background = color.toHEXA().toString();
+    pickr.hide();
 });
